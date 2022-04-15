@@ -32,7 +32,6 @@ var (
 	GoVersion = runtime.Version()
 	GoOS      = runtime.GOOS
 	GoArch    = runtime.GOARCH
-
 	computedRevision string
 	computedTags     string
 )
