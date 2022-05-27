@@ -6,9 +6,6 @@ require (
 	github.com/alecthomas/kingpin/v2 v2.4.0
 	github.com/go-kit/log v0.2.1
 	github.com/google/go-cmp v0.6.0
-	github.com/julienschmidt/httprouter v1.3.0
-	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822
-	github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f
 	github.com/prometheus/client_model v0.6.1
 	github.com/stretchr/testify v1.9.0
 	golang.org/x/net v0.29.0
@@ -34,5 +31,3 @@ require (
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-retract v0.50.0 // Critical bug in counter suffixes, please read issue https://github.com/prometheus/common/issues/605
