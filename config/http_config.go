@@ -534,6 +534,13 @@ func WithSecretManager(manager SecretManager) *secretManagerOption {
 	}
 }
 
+// WithIdleConnTimeout allows setting the user agent.
+func WithUserAgent(ua string) HTTPClientOption {
+	return func(opts *httpClientOptions) {
+		opts.userAgent = ua
+	}
+}
+
 // NewClient returns a http.Client using the specified http.RoundTripper.
 func newClient(rt http.RoundTripper) *http.Client {
 	return &http.Client{Transport: rt}
@@ -644,6 +651,10 @@ func NewRoundTripperFromConfigWithContext(ctx context.Context, cfg HTTPClientCon
 				return nil, fmt.Errorf("unable to use password: %w", err)
 			}
 			rt = NewBasicAuthRoundTripper(usernameSecret, passwordSecret, rt)
+		}
+
+		if opts.userAgent != "" {
+			rt = NewUserAgentRoundTripper(opts.userAgent, rt)
 		}
 
 		if cfg.OAuth2 != nil {
