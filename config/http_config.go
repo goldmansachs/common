@@ -534,7 +534,7 @@ func WithSecretManager(manager SecretManager) *secretManagerOption {
 	}
 }
 
-// WithIdleConnTimeout allows setting the user agent.
+// WithUserAgent allows setting the user agent.
 func WithUserAgent(ua string) HTTPClientOption {
 	return func(opts *httpClientOptions) {
 		opts.userAgent = ua
