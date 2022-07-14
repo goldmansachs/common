@@ -653,6 +653,10 @@ func NewRoundTripperFromConfigWithContext(ctx context.Context, cfg HTTPClientCon
 			rt = NewBasicAuthRoundTripper(usernameSecret, passwordSecret, rt)
 		}
 
+		if cfg.OAuth2 != nil {
+			rt = NewOAuth2RoundTripper(cfg.OAuth2, rt, &opts)
+		}
+
 		if opts.userAgent != "" {
 			rt = NewUserAgentRoundTripper(opts.userAgent, rt)
 		}
@@ -676,7 +680,6 @@ func NewRoundTripperFromConfigWithContext(ctx context.Context, cfg HTTPClientCon
 		if opts.host != "" {
 			rt = NewHostRoundTripper(opts.host, rt)
 		}
-
 		// Return a new configured RoundTripper.
 		return rt, nil
 	}
@@ -973,7 +976,6 @@ func (rt *oauth2RoundTripper) RoundTrip(req *http.Request) (*http.Response, erro
 			if err != nil {
 				return nil, err
 			}
-
 			rt.mtx.Lock()
 			rt.lastSecret = newSecret
 			rt.lastRT.Source = source
