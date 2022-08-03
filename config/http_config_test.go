@@ -1242,6 +1242,7 @@ func TestTLSRoundTripper(t *testing.T) {
 			}
 
 			b, err := io.ReadAll(r.Body)
+<<<<<<< HEAD
 			r.Body.Close()
 			if err != nil {
 				t.Errorf("Can't read the server response body")
