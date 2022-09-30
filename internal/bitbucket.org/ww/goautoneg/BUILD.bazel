@@ -1,0 +1,20 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "goautoneg",
+    srcs = ["autoneg.go"],
+    importpath = "github.com/prometheus/common/internal/bitbucket.org/ww/goautoneg",
+    visibility = ["//:__subpackages__"],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":goautoneg",
+    visibility = ["//:__subpackages__"],
+)
+
+go_test(
+    name = "goautoneg_test",
+    srcs = ["autoneg_test.go"],
+    embed = [":goautoneg"],
+)
