@@ -1,0 +1,36 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "config",
+    srcs = [
+        "config.go",
+        "http_config.go",
+    ],
+    importpath = "github.com/prometheus/common/config",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_mwitkow_go_conntrack//:go_default_library",
+        "@in_gopkg_yaml_v2//:go_default_library",
+        "@org_golang_x_net//http2:go_default_library",
+        "@org_golang_x_oauth2//:go_default_library",
+        "@org_golang_x_oauth2//clientcredentials:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":config",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "config_test",
+    srcs = [
+        "config_test.go",
+        "http_config_test.go",
+        "tls_config_test.go",
+    ],
+    data = glob(["testdata/**"]),
+    embed = [":config"],
+    deps = ["@in_gopkg_yaml_v2//:go_default_library"],
+)

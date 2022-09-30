@@ -1,0 +1,15 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "version",
+    srcs = ["info.go"],
+    importpath = "github.com/prometheus/common/version",
+    visibility = ["//visibility:public"],
+    deps = ["@com_github_prometheus_client_golang//prometheus:go_default_library"],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":version",
+    visibility = ["//visibility:public"],
+)
