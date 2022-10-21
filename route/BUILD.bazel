@@ -5,7 +5,7 @@ go_library(
     srcs = ["route.go"],
     importpath = "github.com/prometheus/common/route",
     visibility = ["//visibility:public"],
-    deps = ["@com_github_julienschmidt_httprouter//:go_default_library"],
+    deps = ["@com_github_julienschmidt_httprouter//:httprouter"],
 )
 
 alias(

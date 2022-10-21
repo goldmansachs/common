@@ -5,7 +5,7 @@ go_library(
     srcs = ["info.go"],
     importpath = "github.com/prometheus/common/version",
     visibility = ["//visibility:public"],
-    deps = ["@com_github_prometheus_client_golang//prometheus:go_default_library"],
+    deps = ["@com_github_prometheus_client_golang//prometheus"],
 )
 
 alias(
