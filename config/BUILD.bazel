@@ -9,11 +9,11 @@ go_library(
     importpath = "github.com/prometheus/common/config",
     visibility = ["//visibility:public"],
     deps = [
-        "@com_github_mwitkow_go_conntrack//:go_default_library",
-        "@in_gopkg_yaml_v2//:go_default_library",
-        "@org_golang_x_net//http2:go_default_library",
-        "@org_golang_x_oauth2//:go_default_library",
-        "@org_golang_x_oauth2//clientcredentials:go_default_library",
+        "@com_github_mwitkow_go_conntrack//:go-conntrack",
+        "@in_gopkg_yaml_v2//:yaml_v2",
+        "@org_golang_x_net//http2",
+        "@org_golang_x_oauth2//:oauth2",
+        "@org_golang_x_oauth2//clientcredentials",
     ],
 )
 
@@ -32,5 +32,5 @@ go_test(
     ],
     data = glob(["testdata/**"]),
     embed = [":config"],
-    deps = ["@in_gopkg_yaml_v2//:go_default_library"],
+    deps = ["@in_gopkg_yaml_v2//:yaml_v2"],
 )
