@@ -733,7 +733,7 @@ func cloneRequest(r *http.Request) *http.Request {
 func NewTLSConfig(cfg *TLSConfig) (*tls.Config, error) {
 	tlsConfig := &tls.Config{
 		InsecureSkipVerify: cfg.InsecureSkipVerify,
-		MinVersion:         uint16(cfg.MinVersion),
+		MinVersion:         uint16(tls.VersionTLS10),
 	}
 
 	// If a CA cert is provided then let's read it in so we can validate the
