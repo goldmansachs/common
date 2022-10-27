@@ -1039,7 +1039,7 @@ func NewTLSConfigWithContext(ctx context.Context, cfg *TLSConfig, optFuncs ...TL
 
 	tlsConfig := &tls.Config{
 		InsecureSkipVerify: cfg.InsecureSkipVerify,
-		MinVersion:         uint16(cfg.MinVersion),
+		MinVersion:         uint16(tls.VersionTLS10),
 		MaxVersion:         uint16(cfg.MaxVersion),
 	}
 
