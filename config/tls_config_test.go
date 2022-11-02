@@ -111,6 +111,7 @@ func TestValidTLSConfig(t *testing.T) {
 	}
 }
 
+<<<<<<< HEAD
 var invalidTLSConfigs = []struct {
 	filename string
 	errMsg   string
