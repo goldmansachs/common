@@ -1152,6 +1152,37 @@ func (c *TLSConfig) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	return c.Validate()
 }
 
+// readCertAndKey reads the cert and key files from the disk.
+func readCertAndKey(certFile, keyFile string) ([]byte, []byte, error) {
+	certData, err := ioutil.ReadFile(certFile)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	keyData, err := ioutil.ReadFile(keyFile)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return certData, keyData, nil
+}
+
+// getClientCertificate reads the pair of client cert and key from disk and returns a tls.Certificate.
+func (c *TLSConfig) getClientCertificate(_ *tls.CertificateRequestInfo) (*tls.Certificate, error) {
+	certData, keyData, err := readCertAndKey(c.CertFile, c.KeyFile)
+	if err != nil {
+		return nil, fmt.Errorf("unable to read specified client cert (%s) & key (%s): %s", c.CertFile, c.KeyFile, err)
+	}
+
+	cert, err := tls.X509KeyPair(certData, keyData)
+	if err != nil {
+		return nil, fmt.Errorf("unable to use specified client cert (%s) & key (%s): %s", c.CertFile, c.KeyFile, err)
+	}
+
+	return &cert, nil
+>>>>>>> 78d22dc (Check if TLS certificate and key file have been modified (#345))
+}
+
 // Validate validates the TLSConfig to check that only one of the inlined or
 // file-based fields for the TLS CA, client certificate, and client key are
 // used.
