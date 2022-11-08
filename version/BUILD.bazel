@@ -5,6 +5,13 @@ go_library(
     srcs = ["info.go"],
     importpath = "github.com/prometheus/common/version",
     visibility = ["//visibility:public"],
+    x_defs = {
+        "Version": "2.39.1",
+        "Revision": "{STABLE_REVISION}",
+        "Branch": "{STABLE_BRANCH_NAME}",
+        "BuildUser": "{STABLE_BUILD_USER}",
+        "BuildDate": "{BUILD_DATE_COMPACT}",
+    },
     deps = ["@com_github_prometheus_client_golang//prometheus"],
 )
 
