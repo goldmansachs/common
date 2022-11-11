@@ -597,6 +597,50 @@ func TestProxyConfiguration(t *testing.T) {
 	}
 }
 
+func TestProxyConfiguration(t *testing.T) {
+	testcases := map[string]struct {
+		testFn  string
+		loader  func(string) (*HTTPClientConfig, []byte, error)
+		isValid bool
+	}{
+		"good yaml": {
+			testFn:  "testdata/http.conf.proxy-headers.good.yml",
+			loader:  LoadHTTPConfigFile,
+			isValid: true,
+		},
+		"bad yaml": {
+			testFn:  "testdata/http.conf.proxy-headers.bad.yml",
+			loader:  LoadHTTPConfigFile,
+			isValid: false,
+		},
+		"good json": {
+			testFn:  "testdata/http.conf.proxy-headers.good.json",
+			loader:  loadHTTPConfigJSONFile,
+			isValid: true,
+		},
+		"bad json": {
+			testFn:  "testdata/http.conf.proxy-headers.bad.json",
+			loader:  loadHTTPConfigJSONFile,
+			isValid: false,
+		},
+	}
+
+	for name, tc := range testcases {
+		t.Run(name, func(t *testing.T) {
+			_, _, err := tc.loader(tc.testFn)
+			if tc.isValid {
+				if err != nil {
+					t.Fatalf("Error validating %s: %s", tc.testFn, err)
+				}
+			} else {
+				if err == nil {
+					t.Fatalf("Expecting error validating %s but got %s", tc.testFn, err)
+				}
+			}
+		})
+	}
+}
+
 func TestNewClientFromInvalidConfig(t *testing.T) {
 	newClientInvalidConfig := []struct {
 		clientConfig HTTPClientConfig
@@ -1242,7 +1286,6 @@ func TestTLSRoundTripper(t *testing.T) {
 			}
 
 			b, err := io.ReadAll(r.Body)
-<<<<<<< HEAD
 			r.Body.Close()
 			if err != nil {
 				t.Errorf("Can't read the server response body")

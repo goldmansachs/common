@@ -443,6 +443,9 @@ func (c *HTTPClientConfig) Validate() error {
 			return err
 		}
 	}
+	if len(c.ProxyConnectHeader) > 0 && (c.ProxyURL.URL == nil || c.ProxyURL.String() == "") {
+		return fmt.Errorf("if proxy_connect_header is configured proxy_url must also be configured")
+	}
 	return nil
 }
 
