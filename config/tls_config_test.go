@@ -66,6 +66,9 @@ var expectedTLSConfigs = []struct {
 	{
 		filename: "tls_config.tlsversion.good.json",
 		config:   &tls.Config{MinVersion: tls.VersionTLS11},
+	}, {
+		filename: "tls_config.max_version.good.json",
+		config:   &tls.Config{MaxVersion: tls.VersionTLS12},
 	},
 	{
 		filename: "tls_config.max_version.good.json",
@@ -82,6 +85,15 @@ var expectedTLSConfigs = []struct {
 	{
 		filename: "tls_config.tlsversion.good.yml",
 		config:   &tls.Config{MinVersion: tls.VersionTLS11},
+	}, {
+		filename: "tls_config.max_version.good.yml",
+		config:   &tls.Config{MaxVersion: tls.VersionTLS12},
+	}, {
+		filename: "tls_config.max_and_min_version.good.yml",
+		config:   &tls.Config{MaxVersion: tls.VersionTLS12, MinVersion: tls.VersionTLS11},
+	}, {
+		filename: "tls_config.max_and_min_version_same.good.yml",
+		config:   &tls.Config{MaxVersion: tls.VersionTLS12, MinVersion: tls.VersionTLS12},
 	},
 	{
 		filename: "tls_config.max_version.good.yml",
@@ -111,7 +123,6 @@ func TestValidTLSConfig(t *testing.T) {
 	}
 }
 
-<<<<<<< HEAD
 var invalidTLSConfigs = []struct {
 	filename string
 	errMsg   string
