@@ -86,8 +86,9 @@ func (s Sample) MarshalJSON() ([]byte, error) {
 		return json.Marshal(&v)
 	}
 	v := struct {
-		Metric Metric     `json:"metric"`
-		Value  SamplePair `json:"value"`
+		Metric    Metric              `json:"metric"`
+		Value     SamplePair          `json:"value"`
+		Histogram SampleHistogramPair `json:"histogram"`
 	}{
 		Metric: s.Metric,
 		Value: SamplePair{
@@ -108,7 +109,7 @@ func (s *Sample) UnmarshalJSON(b []byte) error {
 		Metric: s.Metric,
 		Value: SamplePair{
 			Timestamp: s.Timestamp,
-			Value:     s.Value,
+			Histogram: s.Histogram,
 		},
 		Histogram: SampleHistogramPair{
 			Timestamp: s.Timestamp,
