@@ -296,7 +296,6 @@ func TestMatrixJSON(t *testing.T) {
 		}
 	}
 }
-
 func BenchmarkJSONMarshallingSamplePairMatrix(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := json.Marshal(samplePairMatrixValue)
