@@ -141,7 +141,7 @@ func TestEqualSamples(t *testing.T) {
 			in2: &Sample{
 				Metric:    Metric{"foo": "bar"},
 				Timestamp: 0,
-				Histogram: genSampleHistogram(),
+				Histogram: genSampleHistogramPtr(),
 			},
 			want: false,
 		},
