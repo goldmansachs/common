@@ -395,3 +395,8 @@ func (mat Matrix) String() string {
 
 	return strings.Join(strs, "\n")
 }
+
+type GenericSamplePair interface {
+	SamplePair | SampleHistogramPair
+	GetTimestamp() Time
+}
