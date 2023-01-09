@@ -132,6 +132,7 @@ func (s *sampleHistogramPairPtr) UnmarshalJSON(buf []byte) error {
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
+// TODO: simplify and remove the need for both sampleHistogramPairPtr and SampleHistogramPair
 func (s *Sample) UnmarshalJSON(b []byte) error {
 	v := struct {
 		Metric    Metric                 `json:"metric"`
