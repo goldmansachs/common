@@ -6,7 +6,7 @@ go_library(
     importpath = "github.com/prometheus/common/version",
     visibility = ["//visibility:public"],
     x_defs = {
-        "Version": "2.39.1",
+        "Version": "{STABLE_AREA_BUILD}",
         "Revision": "{STABLE_REVISION}",
         "Branch": "{STABLE_BRANCH_NAME}",
         "BuildUser": "{STABLE_BUILD_USER}",
