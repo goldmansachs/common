@@ -298,11 +298,6 @@ func genSampleHistogram() *SampleHistogram {
 	}
 }
 
-func genSampleHistogramPtr() *SampleHistogram {
-	h := genSampleHistogram()
-	return &h
-}
-
 func TestSampleHistogramPairJSON(t *testing.T) {
 	input := []struct {
 		plain string
@@ -465,7 +460,7 @@ func TestSampleHistogramJSON(t *testing.T) {
 				Metric: Metric{
 					MetricNameLabel: "test_metric",
 				},
-				Histogram: genSampleHistogramPtr(),
+				Histogram: genSampleHistogram(),
 				Timestamp: 1234567,
 			},
 		},
@@ -559,7 +554,7 @@ func TestVectorHistogramJSON(t *testing.T) {
 				Metric: Metric{
 					MetricNameLabel: "test_metric",
 				},
-				Histogram: genSampleHistogramPtr(),
+				Histogram: genSampleHistogram(),
 				Timestamp: 1234567,
 			}},
 		},
@@ -671,14 +666,14 @@ func TestVectorHistogramJSON(t *testing.T) {
 					Metric: Metric{
 						MetricNameLabel: "test_metric",
 					},
-					Histogram: genSampleHistogramPtr(),
+					Histogram: genSampleHistogram(),
 					Timestamp: 1234567,
 				},
 				&Sample{
 					Metric: Metric{
 						"foo": "bar",
 					},
-					Histogram: genSampleHistogramPtr(),
+					Histogram: genSampleHistogram(),
 					Timestamp: 1234,
 				},
 			},

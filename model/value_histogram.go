@@ -147,6 +147,9 @@ func (s SampleHistogramPair) MarshalJSON() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	if s.Histogram == nil {
+		return nil, fmt.Errorf("histogram is nil")
+	}
 	v, err := json.Marshal(s.Histogram)
 	if err != nil {
 		return nil, err
