@@ -18,6 +18,9 @@ import (
 	"fmt"
 	"math"
 	"strconv"
+	"unsafe"
+
+	jsoniter "github.com/json-iterator/go"
 )
 
 // ZeroSamplePair is the pseudo zero-value of SamplePair used to signal a
@@ -70,15 +73,7 @@ type SamplePair struct {
 }
 
 func (s SamplePair) MarshalJSON() ([]byte, error) {
-	t, err := json.Marshal(s.Timestamp)
-	if err != nil {
-		return nil, err
-	}
-	v, err := json.Marshal(s.Value)
-	if err != nil {
-		return nil, err
-	}
-	return []byte(fmt.Sprintf("[%s,%s]", t, v)), nil
+	return jsoniter.ConfigCompatibleWithStandardLibrary.Marshal(s)
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
