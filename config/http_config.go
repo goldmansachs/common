@@ -443,8 +443,8 @@ func (c *HTTPClientConfig) Validate() error {
 			return err
 		}
 	}
-	if len(c.ProxyConnectHeader) > 0 && (c.ProxyURL.URL == nil || c.ProxyURL.String() == "") {
-		return fmt.Errorf("if proxy_connect_header is configured proxy_url must also be configured")
+	if err := c.ProxyConfig.Validate(); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1194,21 +1194,6 @@ func readCertAndKey(certFile, keyFile string) ([]byte, []byte, error) {
 	return certData, keyData, nil
 }
 
-// getClientCertificate reads the pair of client cert and key from disk and returns a tls.Certificate.
-func (c *TLSConfig) getClientCertificate(_ *tls.CertificateRequestInfo) (*tls.Certificate, error) {
-	certData, keyData, err := readCertAndKey(c.CertFile, c.KeyFile)
-	if err != nil {
-		return nil, fmt.Errorf("unable to read specified client cert (%s) & key (%s): %s", c.CertFile, c.KeyFile, err)
-	}
-
-	cert, err := tls.X509KeyPair(certData, keyData)
-	if err != nil {
-		return nil, fmt.Errorf("unable to use specified client cert (%s) & key (%s): %s", c.CertFile, c.KeyFile, err)
-	}
-
-	return &cert, nil
->>>>>>> 78d22dc (Check if TLS certificate and key file have been modified (#345))
-}
 
 // Validate validates the TLSConfig to check that only one of the inlined or
 // file-based fields for the TLS CA, client certificate, and client key are
