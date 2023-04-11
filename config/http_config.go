@@ -1194,7 +1194,6 @@ func readCertAndKey(certFile, keyFile string) ([]byte, []byte, error) {
 	return certData, keyData, nil
 }
 
-
 // Validate validates the TLSConfig to check that only one of the inlined or
 // file-based fields for the TLS CA, client certificate, and client key are
 // used.
