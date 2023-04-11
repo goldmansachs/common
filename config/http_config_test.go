@@ -952,6 +952,26 @@ func TestTLSConfigInvalidCA(t *testing.T) {
 			},
 			errorMessage: "at most one of key and key_file must be configured",
 		},
+		{
+			configTLSConfig: TLSConfig{
+				CAFile:             "",
+				Cert:               readFile(t, ClientCertificatePath),
+				CertFile:           ClientCertificatePath,
+				KeyFile:            ClientKeyNoPassPath,
+				ServerName:         "",
+				InsecureSkipVerify: false},
+			errorMessage: "at most one of cert and cert_file must be configured",
+		},
+		{
+			configTLSConfig: TLSConfig{
+				CAFile:             "",
+				CertFile:           ClientCertificatePath,
+				Key:                Secret(readFile(t, ClientKeyNoPassPath)),
+				KeyFile:            ClientKeyNoPassPath,
+				ServerName:         "",
+				InsecureSkipVerify: false},
+			errorMessage: "at most one of key and key_file must be configured",
+		},
 	}
 
 	for _, anInvalididTLSConfig := range invalidTLSConfig {
