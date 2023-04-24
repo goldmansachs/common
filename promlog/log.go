@@ -117,6 +117,8 @@ func New(config *Config) log.Logger {
 	if config.Format != nil && config.Format.s == "json" {
 		return NewWithLogger(log.NewJSONLogger(log.NewSyncWriter(os.Stderr)), config)
 	}
+
+	return NewWithLogger(log.NewLogfmtLogger(log.NewSyncWriter(os.Stderr)), config)
 }
 
 	return NewWithLogger(log.NewLogfmtLogger(log.NewSyncWriter(os.Stderr)), config)
@@ -141,6 +143,8 @@ func NewDynamic(config *Config) *logger {
 	if config.Format != nil && config.Format.s == "json" {
 		return NewDynamicWithLogger(log.NewJSONLogger(log.NewSyncWriter(os.Stderr)), config)
 	}
+
+	return NewDynamicWithLogger(log.NewLogfmtLogger(log.NewSyncWriter(os.Stderr)), config)
 }
 
 	return NewDynamicWithLogger(log.NewLogfmtLogger(log.NewSyncWriter(os.Stderr)), config)
