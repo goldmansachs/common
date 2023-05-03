@@ -23,6 +23,7 @@ import (
 	"github.com/prometheus/common/model"
 
 	dto "github.com/prometheus/client_model/go"
+	"google.golang.org/protobuf/proto"
 )
 
 func TestNegotiate(t *testing.T) {
