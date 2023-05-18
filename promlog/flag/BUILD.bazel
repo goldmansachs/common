@@ -7,7 +7,7 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//promlog",
-        "@in_gopkg_alecthomas_kingpin_v2//:kingpin_v2",
+        "@com_github_alecthomas_kingpin_v2//:kingpin",
     ],
 )
 
