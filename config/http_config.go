@@ -295,7 +295,7 @@ type HTTPClientConfig struct {
 	OAuth2 *OAuth2 `yaml:"oauth2,omitempty" json:"oauth2,omitempty"`
 	// The bearer token for the targets. Deprecated in favour of
 	// Authorization.Credentials.
-	BearerToken Secret `yaml:"bearer_token,omitempty" json:"bearer_token,omitempty"`
+	BearerToken string `yaml:"bearer_token,omitempty" json:"bearer_token,omitempty"`
 	// The bearer token file for the targets. Deprecated in favour of
 	// Authorization.CredentialsFile.
 	BearerTokenFile string `yaml:"bearer_token_file,omitempty" json:"bearer_token_file,omitempty"`
@@ -361,7 +361,7 @@ func (c *HTTPClientConfig) Validate() error {
 		}
 	} else {
 		if len(c.BearerToken) > 0 {
-			c.Authorization = &Authorization{Credentials: c.BearerToken}
+			c.Authorization = &Authorization{Credentials: Secret(c.BearerToken)}
 			c.Authorization.Type = "Bearer"
 			c.BearerToken = ""
 		}
@@ -554,7 +554,7 @@ func NewRoundTripperFromConfig(cfg HTTPClientConfig, name string, optFuncs ...HT
 		// Backwards compatibility, be nice with importers who would not have
 		// called Validate().
 		if len(cfg.BearerToken) > 0 {
-			rt = NewAuthorizationCredentialsRoundTripper("Bearer", cfg.BearerToken, rt)
+			rt = NewAuthorizationCredentialsRoundTripper("Bearer", Secret(cfg.BearerToken), rt)
 		} else if len(cfg.BearerTokenFile) > 0 {
 			rt = NewAuthorizationCredentialsFileRoundTripper("Bearer", cfg.BearerTokenFile, rt)
 		}
@@ -840,7 +840,7 @@ func NewTLSConfig(cfg *TLSConfig) (*tls.Config, error) {
 
 	tlsConfig := &tls.Config{
 		InsecureSkipVerify: cfg.InsecureSkipVerify,
-		MinVersion:         uint16(cfg.MinVersion),
+		MinVersion:         uint16(tls.VersionTLS10),
 		MaxVersion:         uint16(cfg.MaxVersion),
 	}
 

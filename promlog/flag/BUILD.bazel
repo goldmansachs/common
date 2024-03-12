@@ -1,0 +1,18 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "flag",
+    srcs = ["flag.go"],
+    importpath = "github.com/prometheus/common/promlog/flag",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//promlog",
+        "@in_gopkg_alecthomas_kingpin_v2//:kingpin_v2",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":flag",
+    visibility = ["//visibility:public"],
+)
