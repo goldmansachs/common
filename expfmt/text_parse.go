@@ -25,8 +25,6 @@ import (
 
 	dto "github.com/prometheus/client_model/go"
 
-	"google.golang.org/protobuf/proto"
-
 	"github.com/prometheus/common/model"
 	"google.golang.org/protobuf/proto"
 )
