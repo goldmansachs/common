@@ -8,6 +8,7 @@ go_library(
         "fnv.go",
         "labels.go",
         "labelset.go",
+        "metadata.go",
         "metric.go",
         "model.go",
         "signature.go",
@@ -20,6 +21,10 @@ go_library(
     ],
     importpath = "github.com/prometheus/common/model",
     visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_prometheus_client_model//go",
+        "@org_golang_google_protobuf//proto",
+    ],
 )
 
 alias(
@@ -44,4 +49,10 @@ go_test(
         "value_test.go",
     ],
     embed = [":model"],
+    deps = [
+        "@com_github_google_go_cmp//cmp",
+        "@com_github_google_go_cmp//cmp/cmpopts",
+        "@com_github_prometheus_client_model//go",
+        "@org_golang_google_protobuf//proto",
+    ],
 )
