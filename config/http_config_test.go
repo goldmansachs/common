@@ -2201,6 +2201,7 @@ no_proxy: promcon.io,cncf.io`, proxyServer.URL),
 
 			proxyFunc := proxyConfig.Proxy()
 			resultURL, err := proxyFunc(req)
+
 			if err != nil {
 				t.Fatalf("expected no error, but got: %v", err)
 				return

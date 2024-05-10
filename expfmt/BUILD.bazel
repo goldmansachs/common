@@ -1,0 +1,50 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "expfmt",
+    srcs = [
+        "decode.go",
+        "encode.go",
+        "expfmt.go",
+        "openmetrics_create.go",
+        "text_create.go",
+        "text_parse.go",
+    ],
+    importpath = "github.com/prometheus/common/expfmt",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//internal/bitbucket.org/ww/goautoneg",
+        "//model",
+        "@com_github_matttproud_golang_protobuf_extensions//pbutil",
+        "@com_github_prometheus_client_model//go",
+        "@org_golang_google_protobuf//encoding/prototext",
+        "@org_golang_google_protobuf//proto",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":expfmt",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "expfmt_test",
+    srcs = [
+        "bench_test.go",
+        "decode_test.go",
+        "encode_test.go",
+        "openmetrics_create_test.go",
+        "text_create_test.go",
+        "text_parse_test.go",
+    ],
+    data = glob(["testdata/**"]),
+    embed = [":expfmt"],
+    deps = [
+        "//model",
+        "@com_github_matttproud_golang_protobuf_extensions//pbutil",
+        "@com_github_prometheus_client_model//go",
+        "@org_golang_google_protobuf//proto",
+        "@org_golang_google_protobuf//types/known/timestamppb",
+    ],
+)

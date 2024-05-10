@@ -28,6 +28,7 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	"github.com/prometheus/common/model"
+	"google.golang.org/protobuf/proto"
 )
 
 // A stateFn is a function that represents a state in a state machine. By

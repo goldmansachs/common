@@ -1,0 +1,44 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "sigv4",
+    srcs = [
+        "sigv4.go",
+        "sigv4_config.go",
+    ],
+    importpath = "github.com/prometheus/common/sigv4",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//config",
+        "@com_github_aws_aws_sdk_go//aws:go_default_library",
+        "@com_github_aws_aws_sdk_go//aws/credentials:go_default_library",
+        "@com_github_aws_aws_sdk_go//aws/credentials/stscreds:go_default_library",
+        "@com_github_aws_aws_sdk_go//aws/session:go_default_library",
+        "@com_github_aws_aws_sdk_go//aws/signer/v4:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":sigv4",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "sigv4_test",
+    srcs = [
+        "sigv4_config_test.go",
+        "sigv4_test.go",
+    ],
+    data = glob(["testdata/**"]),
+    embed = [":sigv4"],
+    deps = [
+        "@com_github_aws_aws_sdk_go//aws:go_default_library",
+        "@com_github_aws_aws_sdk_go//aws/credentials:go_default_library",
+        "@com_github_aws_aws_sdk_go//aws/session:go_default_library",
+        "@com_github_aws_aws_sdk_go//aws/signer/v4:go_default_library",
+        "@com_github_prometheus_client_golang//prometheus/promhttp",
+        "@com_github_stretchr_testify//require",
+        "@in_gopkg_yaml_v2//:yaml_v2",
+    ],
+)

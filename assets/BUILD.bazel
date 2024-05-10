@@ -1,0 +1,27 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "assets",
+    srcs = ["embed_gzip.go"],
+    importpath = "github.com/prometheus/common/assets",
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":assets",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "assets_test",
+    srcs = ["embed_gzip_test.go"],
+    data = glob(["testdata/**"]),
+    embed = [":assets"],
+    embedsrcs = [
+        "testdata/both",
+        "testdata/both.gz",
+        "testdata/compressed.gz",
+        "testdata/uncompressed",
+    ],
+)
