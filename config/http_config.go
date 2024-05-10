@@ -1278,7 +1278,6 @@ func (c *TLSConfig) getClientCertificate(ctx context.Context, secretManager Secr
 	if err != nil {
 		return nil, fmt.Errorf("unable to use specified client cert (%s) & key (%s): %w", certSecret.Description(), keySecret.Description(), err)
 	}
-
 	return &cert, nil
 }
 
