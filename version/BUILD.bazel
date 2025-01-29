@@ -1,0 +1,26 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "version",
+    srcs = [
+        "info.go",
+        "info_default.go",
+        "info_go118.go",
+    ],
+    importpath = "github.com/prometheus/common/version",
+    visibility = ["//visibility:public"],
+    x_defs = {
+        "Version": "{STABLE_AREA_BUILD}",
+        "Revision": "{STABLE_REVISION}",
+        "Branch": "{STABLE_BRANCH_NAME}",
+        "BuildUser": "{STABLE_BUILD_USER}",
+        "BuildDate": "{BUILD_DATE_COMPACT}",
+    },
+    deps = ["@com_github_prometheus_client_golang//prometheus"],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":version",
+    visibility = ["//visibility:public"],
+)

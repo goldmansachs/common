@@ -1,0 +1,28 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "promlog",
+    srcs = ["log.go"],
+    importpath = "github.com/prometheus/common/promlog",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_go_kit_log//:log",
+        "@com_github_go_kit_log//level",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":promlog",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "promlog_test",
+    srcs = ["log_test.go"],
+    embed = [":promlog"],
+    deps = [
+        "@com_github_go_kit_log//level",
+        "@in_gopkg_yaml_v2//:yaml_v2",
+    ],
+)

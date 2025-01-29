@@ -1,0 +1,58 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "model",
+    srcs = [
+        "alert.go",
+        "fingerprinting.go",
+        "fnv.go",
+        "labels.go",
+        "labelset.go",
+        "metadata.go",
+        "metric.go",
+        "model.go",
+        "signature.go",
+        "silence.go",
+        "time.go",
+        "value.go",
+        "value_float.go",
+        "value_histogram.go",
+        "value_type.go",
+    ],
+    importpath = "github.com/prometheus/common/model",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_prometheus_client_model//go",
+        "@org_golang_google_protobuf//proto",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":model",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "model_test",
+    srcs = [
+        "alert_test.go",
+        "fingerprinting_test.go",
+        "labels_test.go",
+        "labelset_test.go",
+        "metric_test.go",
+        "signature_test.go",
+        "silence_test.go",
+        "time_test.go",
+        "value_float_test.go",
+        "value_histogram_test.go",
+        "value_test.go",
+    ],
+    embed = [":model"],
+    deps = [
+        "@com_github_google_go_cmp//cmp",
+        "@com_github_google_go_cmp//cmp/cmpopts",
+        "@com_github_prometheus_client_model//go",
+        "@org_golang_google_protobuf//proto",
+    ],
+)
