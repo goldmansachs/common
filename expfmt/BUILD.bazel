@@ -13,8 +13,8 @@ go_library(
     importpath = "github.com/prometheus/common/expfmt",
     visibility = ["//visibility:public"],
     deps = [
-        "//internal/bitbucket.org/ww/goautoneg",
         "//model",
+        "@com_github_munnerz_goautoneg//:go_default_library",
         "@com_github_prometheus_client_model//go",
         "@org_golang_google_protobuf//encoding/protodelim",
         "@org_golang_google_protobuf//encoding/prototext",
@@ -35,6 +35,7 @@ go_test(
         "bench_test.go",
         "decode_test.go",
         "encode_test.go",
+        "expfmt_test.go",
         "openmetrics_create_test.go",
         "text_create_test.go",
         "text_parse_test.go",
@@ -44,6 +45,7 @@ go_test(
     deps = [
         "//model",
         "@com_github_prometheus_client_model//go",
+        "@com_github_stretchr_testify//require",
         "@org_golang_google_protobuf//encoding/protodelim",
         "@org_golang_google_protobuf//proto",
         "@org_golang_google_protobuf//types/known/timestamppb",

@@ -2,11 +2,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "version",
-    srcs = [
-        "info.go",
-        "info_default.go",
-        "info_go118.go",
-    ],
+    srcs = ["info.go"],
     importpath = "github.com/prometheus/common/version",
     visibility = ["//visibility:public"],
     x_defs = {
@@ -16,7 +12,6 @@ go_library(
         "BuildUser": "{STABLE_BUILD_USER}",
         "BuildDate": "{BUILD_DATE_COMPACT}",
     },
-    deps = ["@com_github_prometheus_client_golang//prometheus"],
 )
 
 alias(
