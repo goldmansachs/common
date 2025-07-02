@@ -305,7 +305,7 @@ type HTTPClientConfig struct {
 	OAuth2 *OAuth2 `yaml:"oauth2,omitempty" json:"oauth2,omitempty"`
 	// The bearer token for the targets. Deprecated in favour of
 	// Authorization.Credentials.
-	BearerToken string `yaml:"bearer_token,omitempty" json:"bearer_token,omitempty"`
+	BearerToken Secret `yaml:"bearer_token,omitempty" json:"bearer_token,omitempty"`
 	// The bearer token file for the targets. Deprecated in favour of
 	// Authorization.CredentialsFile.
 	BearerTokenFile string `yaml:"bearer_token_file,omitempty" json:"bearer_token_file,omitempty"`
@@ -627,7 +627,7 @@ func NewRoundTripperFromConfigWithContext(ctx context.Context, cfg HTTPClientCon
 		// Backwards compatibility, be nice with importers who would not have
 		// called Validate().
 		if len(cfg.BearerToken) > 0 || len(cfg.BearerTokenFile) > 0 {
-			bearerSecret, err := toSecret(opts.secretManager, Secret(cfg.BearerToken), cfg.BearerTokenFile, "")
+			bearerSecret, err := toSecret(opts.secretManager, cfg.BearerToken, cfg.BearerTokenFile, "")
 			if err != nil {
 				return nil, fmt.Errorf("unable to use bearer token: %w", err)
 			}
