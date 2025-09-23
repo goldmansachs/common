@@ -162,11 +162,20 @@ func readFileFromRoot(filename string) string {
 		return ""
 	}
 
-	var mainModule string
+	// Try to find the file starting from the main module's root directory
 	if buildInfo.Main.Path != "" {
-		mainModule = buildInfo.Main.Path
+		// Get the module directory from GOMOD or current working directory
+		if modDir := os.Getenv("GOMOD"); modDir != "" {
+			// GOMOD points to go.mod file, get its directory
+			rootDir := filepath.Dir(modDir)
+			filePath := filepath.Join(rootDir, filename)
+			if data, err := os.ReadFile(filePath); err == nil {
+				return strings.TrimSpace(string(data))
+			}
+		}
 	}
 
+	// Fallback to traversing up from current working directory
 	wd, err := os.Getwd()
 	if err != nil {
 		return ""
