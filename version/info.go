@@ -17,7 +17,6 @@ import (
 	"bytes"
 	"fmt"
 	"os"
-	"path/filepath"
 	"runtime"
 	"runtime/debug"
 	"strings"
@@ -137,55 +136,22 @@ func computeRevision() (string, string) {
 }
 
 func initVersionInfo() {
-	Version = readVersionFile()
+	Version = getVersion()
 	BuildDate = time.Now().UTC().Format("20060102-15:04:05")
 	BuildUser = getBuildUser()
 	Branch = getBranch()
+	Revision = getRevision()
 }
 
-func readVersionFile() string {
-	version := readFileFromRoot("VERSION")
-	if version == "" {
-		return "unknown"
-	}
-
-	versionExtra := readFileFromRoot("VERSION_EXTRA")
-	if versionExtra != "" {
-		return version + "-" + versionExtra
-	}
-	return version
-}
-
-func readFileFromRoot(filename string) string {
-	buildInfo, ok := debug.ReadBuildInfo()
-	if !ok {
-		return ""
-	}
-
-	var mainModule string
-	if buildInfo.Main.Path != "" {
-		mainModule = buildInfo.Main.Path
-	}
-
-	wd, err := os.Getwd()
-	if err != nil {
-		return ""
-	}
-
-	for {
-		filePath := filepath.Join(wd, filename)
-		if data, err := os.ReadFile(filePath); err == nil {
-			return strings.TrimSpace(string(data))
+func getVersion() string {
+	// Get version from environment variable
+	if version := os.Getenv("VERSION"); version != "" {
+		if versionExtra := os.Getenv("VERSION_EXTRA"); versionExtra != "" {
+			return version + "-" + versionExtra
 		}
-
-		parent := filepath.Dir(wd)
-		if parent == wd {
-			break
-		}
-		wd = parent
+		return version
 	}
-
-	return ""
+	return "unknown"
 }
 
 func getBuildUser() string {
@@ -199,6 +165,11 @@ func getBuildUser() string {
 }
 
 func getBranch() string {
+	// Try to get branch from CI environment variable first
+	if branch := os.Getenv("CI_COMMIT_REF_NAME"); branch != "" {
+		return branch
+	}
+
 	buildInfo, ok := debug.ReadBuildInfo()
 	if !ok {
 		return "unknown"
@@ -210,4 +181,12 @@ func getBranch() string {
 		}
 	}
 	return "unknown"
+}
+
+func getRevision() string {
+	// Try to get revision from CI environment variable first
+	if revision := os.Getenv("CI_COMMIT_SHA"); revision != "" {
+		return revision
+	}
+	return ""
 }
