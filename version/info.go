@@ -16,10 +16,13 @@ package version
 import (
 	"bytes"
 	"fmt"
+	"os"
+	"path/filepath"
 	"runtime"
 	"runtime/debug"
 	"strings"
 	"text/template"
+	"time"
 )
 
 // Build information. Populated at build-time.
@@ -90,8 +93,17 @@ func GetTags() string {
 	return computedTags
 }
 
+func PrometheusUserAgent() string {
+	return ComponentUserAgent("Prometheus")
+}
+
+func ComponentUserAgent(component string) string {
+	return component + "/" + Version
+}
+
 func init() {
 	computedRevision, computedTags = computeRevision()
+	initVersionInfo()
 }
 
 func computeRevision() (string, string) {
@@ -122,4 +134,80 @@ func computeRevision() (string, string) {
 		return rev + "-modified", tags
 	}
 	return rev, tags
+}
+
+func initVersionInfo() {
+	Version = readVersionFile()
+	BuildDate = time.Now().UTC().Format("20060102-15:04:05")
+	BuildUser = getBuildUser()
+	Branch = getBranch()
+}
+
+func readVersionFile() string {
+	version := readFileFromRoot("VERSION")
+	if version == "" {
+		return "unknown"
+	}
+
+	versionExtra := readFileFromRoot("VERSION_EXTRA")
+	if versionExtra != "" {
+		return version + "-" + versionExtra
+	}
+	return version
+}
+
+func readFileFromRoot(filename string) string {
+	buildInfo, ok := debug.ReadBuildInfo()
+	if !ok {
+		return ""
+	}
+
+	var mainModule string
+	if buildInfo.Main.Path != "" {
+		mainModule = buildInfo.Main.Path
+	}
+
+	wd, err := os.Getwd()
+	if err != nil {
+		return ""
+	}
+
+	for {
+		filePath := filepath.Join(wd, filename)
+		if data, err := os.ReadFile(filePath); err == nil {
+			return strings.TrimSpace(string(data))
+		}
+
+		parent := filepath.Dir(wd)
+		if parent == wd {
+			break
+		}
+		wd = parent
+	}
+
+	return ""
+}
+
+func getBuildUser() string {
+	if user := os.Getenv("USER"); user != "" {
+		return user
+	}
+	if user := os.Getenv("USERNAME"); user != "" {
+		return user
+	}
+	return "unknown"
+}
+
+func getBranch() string {
+	buildInfo, ok := debug.ReadBuildInfo()
+	if !ok {
+		return "unknown"
+	}
+
+	for _, setting := range buildInfo.Settings {
+		if setting.Key == "vcs.branch" {
+			return setting.Value
+		}
+	}
+	return "unknown"
 }
