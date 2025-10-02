@@ -15,6 +15,7 @@ package version
 
 import (
 	"bytes"
+	_ "embed"
 	"fmt"
 	"os"
 	"runtime"
@@ -135,8 +136,23 @@ func computeRevision() (string, string) {
 	return rev, tags
 }
 
+// SetVersion allows the calling binary to set version information at init time.
+// Call this from your main package's init() function with embedded version strings.
+func SetVersion(version, versionExtra string) {
+	if version != "" {
+		if versionExtra != "" {
+			Version = version + "-" + versionExtra
+		} else {
+			Version = version
+		}
+	}
+}
+
 func initVersionInfo() {
-	Version = getVersion()
+	// Only set if not already set by SetVersion
+	if Version == "" {
+		Version = getVersion()
+	}
 	BuildDate = time.Now().UTC().Format("20060102-15:04:05")
 	BuildUser = getBuildUser()
 	Branch = getBranch()
@@ -144,7 +160,7 @@ func initVersionInfo() {
 }
 
 func getVersion() string {
-	// Get version from environment variable
+	// Try environment variable first (for runtime override)
 	if version := os.Getenv("VERSION"); version != "" {
 		if versionExtra := os.Getenv("VERSION_EXTRA"); versionExtra != "" {
 			return version + "-" + versionExtra
