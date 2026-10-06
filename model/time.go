@@ -294,7 +294,6 @@ func ParseDurationAllowNegative(s string) (Duration, error) {
 func (d Duration) String() string {
 	var (
 		ms   = int64(time.Duration(d) / time.Millisecond)
-		r    = ""
 		sign = ""
 	)
 
@@ -306,28 +305,32 @@ func (d Duration) String() string {
 		sign, ms = "-", -ms
 	}
 
-	f := func(unit string, mult int64, exact bool) {
-		if exact && ms%mult != 0 {
-			return
-		}
-		if v := ms / mult; v > 0 {
-			r += fmt.Sprintf("%d%s", v, unit)
-			ms -= v * mult
-		}
+	factors := map[string]int64{
+		"y":  1000 * 60 * 60 * 24 * 365,
+		"w":  1000 * 60 * 60 * 24 * 7,
+		"d":  1000 * 60 * 60 * 24,
+		"h":  1000 * 60 * 60,
+		"m":  1000 * 60,
+		"s":  1000,
+		"ms": 1,
 	}
 
-	// Only format years and weeks if the remainder is zero, as it is often
-	// easier to read 90d than 12w6d.
-	f("y", 1000*60*60*24*365, true)
-	f("w", 1000*60*60*24*7, true)
-
-	f("d", 1000*60*60*24, false)
-	f("h", 1000*60*60, false)
-	f("m", 1000*60, false)
-	f("s", 1000, false)
-	f("ms", 1, false)
-
-	return sign + r
+	unit := "ms"
+	switch int64(0) {
+	case ms % factors["y"]:
+		unit = "y"
+	case ms % factors["w"]:
+		unit = "w"
+	case ms % factors["d"]:
+		unit = "d"
+	case ms % factors["h"]:
+		unit = "h"
+	case ms % factors["m"]:
+		unit = "m"
+	case ms % factors["s"]:
+		unit = "s"
+	}
+	return fmt.Sprintf("%s%v%v", sign, ms/factors[unit], unit)
 }
 
 // MarshalJSON implements the json.Marshaler interface.

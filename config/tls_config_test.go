@@ -59,43 +59,43 @@ var expectedTLSConfigs = []struct {
 }{
 	{
 		filename: "tls_config.empty.good.json",
-		config:   &tls.Config{},
+		config:   &tls.Config{MinVersion: tls.VersionTLS10},
 	},
 	{
 		filename: "tls_config.insecure.good.json",
-		config:   &tls.Config{InsecureSkipVerify: true},
+		config:   &tls.Config{InsecureSkipVerify: true, MinVersion: tls.VersionTLS10},
 	},
 	{
 		filename: "tls_config.tlsversion.good.json",
-		config:   &tls.Config{MinVersion: tls.VersionTLS11},
+		config:   &tls.Config{MinVersion: tls.VersionTLS10},
 	},
 	{
 		filename: "tls_config.max_version.good.json",
-		config:   &tls.Config{MaxVersion: tls.VersionTLS12},
+		config:   &tls.Config{MaxVersion: tls.VersionTLS12, MinVersion: tls.VersionTLS10},
 	},
 	{
 		filename: "tls_config.empty.good.yml",
-		config:   &tls.Config{},
+		config:   &tls.Config{MinVersion: tls.VersionTLS10},
 	},
 	{
 		filename: "tls_config.insecure.good.yml",
-		config:   &tls.Config{InsecureSkipVerify: true},
+		config:   &tls.Config{InsecureSkipVerify: true, MinVersion: tls.VersionTLS10},
 	},
 	{
 		filename: "tls_config.tlsversion.good.yml",
-		config:   &tls.Config{MinVersion: tls.VersionTLS11},
+		config:   &tls.Config{MinVersion: tls.VersionTLS10},
 	},
 	{
 		filename: "tls_config.max_version.good.yml",
-		config:   &tls.Config{MaxVersion: tls.VersionTLS12},
+		config:   &tls.Config{MaxVersion: tls.VersionTLS12, MinVersion: tls.VersionTLS10},
 	},
 	{
 		filename: "tls_config.max_and_min_version.good.yml",
-		config:   &tls.Config{MaxVersion: tls.VersionTLS12, MinVersion: tls.VersionTLS11},
+		config:   &tls.Config{MaxVersion: tls.VersionTLS12, MinVersion: tls.VersionTLS10},
 	},
 	{
 		filename: "tls_config.max_and_min_version_same.good.yml",
-		config:   &tls.Config{MaxVersion: tls.VersionTLS12, MinVersion: tls.VersionTLS12},
+		config:   &tls.Config{MaxVersion: tls.VersionTLS12, MinVersion: tls.VersionTLS10},
 	},
 }
 

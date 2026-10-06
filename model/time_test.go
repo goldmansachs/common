@@ -150,7 +150,7 @@ func TestParseDuration(t *testing.T) {
 		{
 			in:              "4d1h",
 			out:             4*24*time.Hour + time.Hour,
-			expectedString:  "",
+			expectedString:  "97h",
 			allowedNegative: false,
 		},
 		{
@@ -168,7 +168,7 @@ func TestParseDuration(t *testing.T) {
 		{
 			in:              "3w2d1h",
 			out:             3*7*24*time.Hour + 2*24*time.Hour + time.Hour,
-			expectedString:  "23d1h",
+			expectedString:  "553h",
 			allowedNegative: false,
 		},
 		{
@@ -213,7 +213,7 @@ func TestParseDuration(t *testing.T) {
 		{
 			in:              "-3w2d1h",
 			out:             -(3*7*24*time.Hour + 2*24*time.Hour + time.Hour),
-			expectedString:  "-23d1h",
+			expectedString:  "-553h",
 			allowedNegative: true,
 		},
 		{
@@ -296,8 +296,9 @@ func TestDuration_UnmarshalText(t *testing.T) {
 			in:  "4d",
 			out: 4 * 24 * time.Hour,
 		}, {
-			in:  "4d1h",
-			out: 4*24*time.Hour + time.Hour,
+			in:             "4d1h",
+			out:            4*24*time.Hour + time.Hour,
+			expectedString: "97h",
 		}, {
 			in:             "14d",
 			out:            14 * 24 * time.Hour,
@@ -308,7 +309,7 @@ func TestDuration_UnmarshalText(t *testing.T) {
 		}, {
 			in:             "3w2d1h",
 			out:            3*7*24*time.Hour + 2*24*time.Hour + time.Hour,
-			expectedString: "23d1h",
+			expectedString: "553h",
 		}, {
 			in:  "10y",
 			out: 10 * 365 * 24 * time.Hour,
@@ -377,8 +378,9 @@ func TestDuration_UnmarshalJSON(t *testing.T) {
 			out: 4 * 24 * time.Hour,
 		},
 		{
-			in:  `"4d1h"`,
-			out: 4*24*time.Hour + time.Hour,
+			in:             `"4d1h"`,
+			out:            4*24*time.Hour + time.Hour,
+			expectedString: `"97h"`,
 		},
 		{
 			in:             `"14d"`,
@@ -392,7 +394,7 @@ func TestDuration_UnmarshalJSON(t *testing.T) {
 		{
 			in:             `"3w2d1h"`,
 			out:            3*7*24*time.Hour + 2*24*time.Hour + time.Hour,
-			expectedString: `"23d1h"`,
+			expectedString: `"553h"`,
 		},
 		{
 			in:  `"10y"`,
