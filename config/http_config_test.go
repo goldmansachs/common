@@ -775,6 +775,7 @@ func TestTLSConfig(t *testing.T) {
 		RootCAs:            rootCAs,
 		ServerName:         configTLSConfig.ServerName,
 		InsecureSkipVerify: configTLSConfig.InsecureSkipVerify,
+		MinVersion:         tls.VersionTLS10,
 	}
 
 	tlsConfig, err := NewTLSConfig(&configTLSConfig)
@@ -807,6 +808,7 @@ func TestTLSConfigEmpty(t *testing.T) {
 
 	expectedTLSConfig := &tls.Config{
 		InsecureSkipVerify: configTLSConfig.InsecureSkipVerify,
+		MinVersion:         tls.VersionTLS10,
 	}
 
 	tlsConfig, err := NewTLSConfig(&configTLSConfig)
